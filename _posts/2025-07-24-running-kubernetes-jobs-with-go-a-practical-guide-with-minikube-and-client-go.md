@@ -2,14 +2,14 @@
 layout: post
 title: 'Running Kubernetes Jobs with Go: A Practical Guide with Minikube and Client-go'
 description: >-
-   Learn how to create and run Kubernetes Jobs using Go, Minikube, and the client-go library with a hands-on example
+   Learn how to create and run Kubernetes Jobs using Go, Minikube, and the client-go library with a hands-on example.
 date: 2025-07-24 21:27 +0530
 categories: [Blogging, Tutorial]
 tags: [kubernetes, golang, client-go, job]
 ---
 
 
-In this post, we'll walk through how to create [Kubernetes](https://kubernetes.io/) Jobs using Go. We'll be understanding the basic concept of Kubernetes required, running the job on local with [Minikube](https://minikube.sigs.k8s.io/docs/). So let's begin.
+In this post, we'll walk through how to create [Kubernetes](https://kubernetes.io/) Jobs using Go. We'll be understanding the basic concept of Kubernetes required for running the job locally with [Minikube](https://minikube.sigs.k8s.io/docs/). So let's begin.
 
 ## Kubernetes
 
@@ -17,15 +17,15 @@ In this post, we'll walk through how to create [Kubernetes](https://kubernetes.i
 
  **Kubernetes** is like a super-smart manager for your apps, making sure they run smoothly, scale up or down as needed, and deploy new versions without a hitch. It basically automates all the complex stuff of managing many applications, freeing you up to focus on building awesome software. Think of it as your reliable assistant for handling apps on a large scale.
 
-Kubernetes itself is a boarder concept and will require ample amount of time to understand and master it. Their documentation can be found [here](https://kubernetes.io/docs/home/). Although, we'll be focusing of a few components required for this post.
+Kubernetes itself is a broader concept and will require an ample amount of time to understand and master. Their documentation can be found [here](https://kubernetes.io/docs/home/). Although, we'll be focusing on a few components required for this post.
 
-There are different controllers like [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/), [Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/), HPA etc. that runs or manages pods.
+There are different controllers, like [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/), [Job](https://kubernetes.io/docs/concepts/workloads/controllers/job/), HPA, etc., that run or manage pods.
 
 ## Pods
 
 > [_Pods_](https://kubernetes.io/docs/concepts/workloads/pods/) are the smallest deployable units of computing that you can create and manage in Kubernetes.
 
-Inside a Pod, one or more containers (like Docker containers) share the same network, storage and easily talk to each other. So while containers is the app itself, a Pod is how Kubernetes manages those apps into a single group.
+Inside a pod, one or more containers (like Docker containers) share the same network and storage and easily talk to each other. So while a container is the app itself, a pod is how Kubernetes manages those apps into a single group.
 
 Sample YAML example of a Pod of running [`Nginx`](https://nginx.org/)
 
@@ -48,11 +48,11 @@ spec:
 
 > Jobs represent one-off tasks that run to completion and then stop.
 
-A job creates one or more pods depending upon the job spec and runs it till the completion criteria met or failure. Once the job finishes, it will clean up its own resources. No additional steps should be required if it configured properly.
+A job creates one or more pods depending upon the job spec and runs it till the completion criteria are met or failure. Once the job finishes, it will clean up its own resources. No additional steps should be required if it is configured properly.
 
-Jobs are great for batch tasks, scripts or one-off tasks. It contrasts with Deployment which run continuously.
+Jobs are great for batch tasks, scripts, or one-off tasks. It contrasts with Deployment, which runs continuously.
 
-Simple YAML example of a Job that will run echo command. We'll be running the same job from our go code.
+Simple YAML example of a Job that will run the echo command. We'll be running the same job from our go code.
 
 `my-job.yaml`
 
@@ -75,9 +75,9 @@ spec:
 
 > Kubernetes provides a command line tool for communicating with a Kubernetes cluster's [control plane](https://kubernetes.io/docs/reference/glossary/?all=true#term-control-plane), using the Kubernetes API.
 
-[Kubectl](https://kubernetes.io/docs/reference/kubectl/) is a CLI tool to manage and interact with Kubernetes cluster. If anyone had worked with Kubernetes it is a well known tool, although we'll not be using it in this post, but it can help you debug and can save you time.
+[Kubectl](https://kubernetes.io/docs/reference/kubectl/) is a CLI tool to manage and interact with Kubernetes clusters. If anyone has worked with Kubernetes, it is a well-known tool, although we'll not be using it in this post, but it can help you debug and can save you time.
 
-The above YAML file can be used with it to run pod and jobs.
+The above YAML file can be used with it to run the defined pod and job.
 
 ```bash
 kubectl apply -f my-pod.yaml
@@ -86,12 +86,12 @@ kubectl apply -f my-job.yaml
 ```
 
 The basic command and its usage can be found [here](https://kubernetes.io/docs/reference/kubectl/#examples-common-operations).
-Since we've got enough understanding of Kubernetes and its component required to proceed further. Now we'll be setting up to run it on local, before diving to Go code.
+Since we've got enough understanding of Kubernetes and its components required to proceed further. Now we'll be setting up to run it local before diving into Go code.
 
 ## Minikube Setup
 
-There are multiple ways you can run Kubernetes on local, such as [Minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary+download), [Kind](https://kind.sigs.k8s.io/) and [K3s](https://k3s.io/).
-We're going to use Minikube with docker. (Since I'm personally using it 😅).
+There are multiple ways you can run Kubernetes , such as [Minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary+download), [Kind](https://kind.sigs.k8s.io/), and [K3s](https://k3s.io/).
+We're going to use Minikube with Docker. (Since I'm personally using it 😅).
 
 Use the official doc to install as per your system architecture.
 
@@ -108,7 +108,7 @@ After installation, let's start it by
 minikube start
 ```
 
- It'll take some time to pull the required images and initial setup.
+ It'll take some time to pull the required images and do the initial setup.
 
 Check the status by running
 
@@ -134,13 +134,13 @@ Since the setup is done, we can use `kubectl` commands to run to pods or job.
 
 ## Implementation
 
-We'll be creating a simple go application that'll be runnable on local.
+We'll be creating a simple Go application that'll be runnable on local.
 
 ### Project Setup
 
 We'll be using the [`client-go`](https://github.com/kubernetes/client-go) to interact with Kubernetes.
 
-Create directory and initialize the go package
+Create a directory and initialise the Go package.
 
 ```
 mkdir k8s-job-demo
@@ -166,16 +166,16 @@ go mod init github.com/yourname/k8s-job-demo
 ```
 
 - `main.go` will be the entry point.
-- All the interaction with k8s will be present inside the package`k8sutil`
+- All the interaction with k8s will be present inside the package `k8sutil`.
 
 ### Connecting with Kubernetes
 
-We'll be connecting our go application to Kubernetes using default config, but our function accepts a config file.
+We'll be connecting our Go application to Kubernetes using the default config, but our function accepts a config file.
 
 `k8sutil/client.go`
 
 ```go
-// Package k8sutil will implement uitlity to operate k8s
+// Package k8sutil will implement utility to operate k8s
 package k8sutil
 
 import (
@@ -213,7 +213,7 @@ func newClientSet(kubeconfig string) (*kubernetes.Clientset, error) {
 
 ### Creating Job Specification
 
-This is similar to above job YAML, we're representing the `my-job.yaml` to its respective go struct
+This is similar to the above job YAML, we're representing the `my-job.yaml` to its respective Go struct.
 
 `k8sutil/job-spec.go`
 
@@ -261,9 +261,9 @@ func createJobSpec(name string) *batchv1.Job {
 
 This function will be called from `main.go` and eventually trigger the job.
 
-- We'll initialize the client-set
-- Then get the job spec
-- Now using the job client, we'll trigger the job
+- We'll initialise the clientset.
+- Then get the job spec.
+- Now using the job client, we'll trigger the job.
 
 `k8sutil/job-spec.go`
 
@@ -339,14 +339,14 @@ go mod tidy
 go run main.go
 ```
 
-After running it you should see the output like stating the job has been triggered.
+After running you should see the output; the job has been triggered.
 
 ```bash
 2025/07/24 17:55:58 INFO Triggering a sample job name=hello--1753359958814
 2025/07/24 17:55:58 INFO Job has been created successfully name=hello--1753359958814
 ```
 
-Now this job will run for 30 seconds since we've added sleep of 30 second.
+Now this job will run for 30 seconds since we've added a sleep of 30 seconds.
 
 ```bash
 kubectl get jobs
@@ -368,10 +368,10 @@ kubectl logs jobs/hello--1753359958814
 
 ## Cleanup
 
-Did you remember, we've mentioned above that
+Did you remember? We've mentioned above that
 >Once the job finishes, it will clean up its own resources.
 
-You might notice something interesting: if you run that Go program multiple times, the list of **jobs** and **pods** in your Kubernetes cluster will keep growing. This happens because, by default, a Job cleans up its _resources_ (like the running pod) once it's done, but it doesn't remove its _metadata_ – basically, the record of that job existing.
+You might notice something interesting: if you run that Go program multiple times, the list of **jobs** and **pods** in your Kubernetes cluster will keep growing. This happens because, by default, a Job cleans up its _resources_ (like the running pod) once it's done, but it doesn't remove its _metadata_ —basically, the record of that job existing.
 
 Now, there's a simple fix for this! In your Job's specification (**Job Spec**), you can set a flag called `TTLSecondsAfterFinished`. Once you set this, Kubernetes will automatically clean up _all_ the metadata related to that Job after the time interval you specify. This means everything will be properly removed!
 
@@ -381,15 +381,15 @@ Just a quick heads-up: always make sure you've stored any important logs or nece
 
 ## Conclusion
 
-The above implementation can be found on [Github](https://github.com/adshin21/k8s-job-demo/tree/main).
+The above implementation can be found on [GitHub Repo](https://github.com/adshin21/k8s-job-demo/tree/main).
 
-This was a very basic demo and the idea behind was to have an understanding interaction of K8S and Golang.
+This was a very basic demo, and the idea behind it was to have an understanding interaction of K8S and Golang.
 
-There are multiple things I've not covered and there are things like RBAC, logging, tracing are to be implemented to be run it on production.
+There are multiple things I've not covered, and there are things like RBAC, logging, debugging and tracing to be implemented to run it in production.
 
-The **`client-go` SDK** is seriously well-made! When I first started using it, I hardly even needed to check the official documentation because everything was explained so clearly right there in the code itself. If you're new to the **Go programming language**, you should definitely take some time to explore it. It's a fantastic example of well written and documented code.
+The **`client-go` SDK** is seriously well-made! When I first started using it, I hardly even needed to check the official documentation because everything was explained so clearly right there in the code itself. If you're new to the **Go programming language**, you should definitely take some time to explore it. It's a fantastic example of well-written and documented code.
 
-PS: I've taken some references from the official documentation, and even used their example.
+PS: I've taken some references from the official documentation and even used their example.
 
 ---
-This was my first write up. Feel free to write me for suggestions, queries, improvements and anything else on [linkedin](https://www.linkedin.com/in/adshin21/).
+This was my first write-up. Feel free to write me for suggestions, queries, improvements, and anything else on [LinkedIn](https://www.linkedin.com/in/adshin21/).

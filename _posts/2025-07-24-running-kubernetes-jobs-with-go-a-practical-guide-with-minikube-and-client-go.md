@@ -1,6 +1,8 @@
 ---
 layout: post
 title: 'Running Kubernetes Jobs with Go: A Practical Guide with Minikube and Client-go'
+description: >-
+   Learn how to create and run Kubernetes Jobs using Go, Minikube, and the client-go library with a hands-on example
 date: 2025-07-24 21:27 +0530
 categories: [Blogging, Tutorial]
 tags: [kubernetes, golang, client-go, job]
